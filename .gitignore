@@ -1,0 +1,23 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Hugging Face cache
+.cache/
+hf_cache/
+
+# Vector DB (can be recreated)
+vector_db/
+
+# Uploaded data (keep folder, not files)
+data/*.pdf
+
+# OS files
+.DS_Store
+Thumbs.db

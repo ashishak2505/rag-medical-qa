@@ -22,10 +22,15 @@ embeddings = HuggingFaceEmbeddings(
 )
 
 # Load HF client ONCE
+from huggingface_hub import InferenceClient
+
+HF_API_KEY = os.getenv("HF_API_KEY")
+
 client = InferenceClient(
-    model="mistralai/Mistral-7B-Instruct-v0.2",
-    token=os.environ.get("HUGGINGFACEHUB_API_TOKEN")
+    model="HuggingFaceH4/zephyr-7b-beta",
+    token=HF_API_KEY
 )
+
 
 
 def answer_question(question, vectorstore):

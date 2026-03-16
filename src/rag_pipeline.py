@@ -22,8 +22,6 @@ embeddings = HuggingFaceEmbeddings(
 )
 
 # Load HF client ONCE
-from huggingface_hub import InferenceClient
-
 HF_API_KEY = os.getenv("HF_API_KEY")
 
 client = InferenceClient(

@@ -49,7 +49,7 @@ Tech Stack
 
 ▶️ How to Run Locally
 1️⃣ Clone the Repository
-git clone https://github.com/YOUR_USERNAME/rag-medical-qa.git
+git clone https://github.com/ashishak2505/rag-medical-qa.git
 cd rag-medical-qa
 
 2️⃣ Create & Activate Virtual Environment

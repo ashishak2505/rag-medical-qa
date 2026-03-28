@@ -22,7 +22,10 @@ embeddings = HuggingFaceEmbeddings(
 )
 
 # Load HF client ONCE
+
 HF_API_KEY = os.getenv("HF_API_KEY")
+if not HF_API_KEY:
+    raise ValueError("HF_API_KEY not found")
 
 client = InferenceClient(
     model="HuggingFaceH4/zephyr-7b-beta",

@@ -36,11 +36,14 @@ embeddings = HuggingFaceEmbeddings(
 # Load HF client ONCE
 
 
-load_dotenv()
 def get_hf_client():
-    if not HF_API_KEY:
+    try:
+        client = InferenceClient(token=HF_API_KEY)
+        return client
+    except Exception as e:
+        print(f"Error initializing HF client: {e}")
         return None
-    return InferenceClient(HF_API_KEY)
+
 
 
 def answer_question(question, vectorstore):

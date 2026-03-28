@@ -41,32 +41,41 @@ def answer_question(question, vectorstore):
 
     docs = retriever.invoke(question)
 
-    context = "\n\n".join(doc.page_content for doc in docs)
+    context = "\n\n".join(doc.page_content[:500] for doc in docs)
 
     if summary_mode:
         system_prompt = (
-            "You are a medical document analyst. "
-            "Provide a concise, high-level summary of the document "
-            "based ONLY on the provided context."
-        )
+            "You are a medical document summarizer.\n"
+            "Generate a concise and structured summary using ONLY the provided context.\n\n"
+    
+            "Instructions:\n"
+            "1. Highlight key medical findings, diagnoses, and important details.\n"
+            "2. Avoid unnecessary repetition.\n"
+            "3. Use bullet points if helpful.\n"
+            "4. Do NOT add information not present in the context.\n"
+)
     else:
         system_prompt = (
-            "You are a medical assistant. "
-            "Answer ONLY using the provided context. "
-            "If the answer is not in the context, say 'I don't know'."
-        )
+                "You are a highly accurate medical assistant.\n"
+                "Use ONLY the provided context to answer the question.\n"
+                "Do NOT use external knowledge.\n\n"
+    
+                "Rules:\n"
+                "1. If the answer is not explicitly present, say: 'I don't know'.\n"
+                "2. Do not guess or infer beyond the context.\n"
+                "3. Keep answers clear, factual, and concise.\n"
+                "4. If relevant, cite key phrases from the context.\n"
+    )
 
     messages = [
-        {"role": "system", "content": system_prompt},
         {
             "role": "user",
-            "content": f"""
-Context:
-{context}
+            "content": f"""Context:
+    {context}
 
-Question:
-{question}
-"""
+    Question:
+    {question}
+    """
         },
     ]
 

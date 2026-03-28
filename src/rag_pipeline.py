@@ -2,6 +2,18 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from huggingface_hub import InferenceClient
 import os
+from dotenv import load_dotenv
+import streamlit as st
+load_dotenv()
+
+HF_API_KEY = (
+    os.getenv("HF_API_KEY") or 
+    st.secrets.get("HF_API_KEY", None)
+)
+
+if not HF_API_KEY:
+    raise ValueError("HF_API_KEY not found") 
+
 def is_summary_question(question: str) -> bool:
     summary_keywords = [
         "summary",
@@ -23,18 +35,19 @@ embeddings = HuggingFaceEmbeddings(
 
 # Load HF client ONCE
 
-HF_API_KEY = os.getenv("HF_API_KEY")
-if not HF_API_KEY:
-    raise ValueError("HF_API_KEY not found")
 
-client = InferenceClient(
-    model="HuggingFaceH4/zephyr-7b-beta",
-    token=HF_API_KEY
-)
-
+load_dotenv()
+def get_hf_client():
+    if not HF_API_KEY:
+        return None
+    return InferenceClient(HF_API_KEY)
 
 
 def answer_question(question, vectorstore):
+    client = get_hf_client()
+
+    if client is None:
+        return "HF API key not configured", []
     # Detect intent
     summary_mode = is_summary_question(question)
 
